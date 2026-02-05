@@ -1,0 +1,27 @@
+// Code your testbench here
+// or browse Examples
+module upcounter_testbench();
+reg clk1, reset_n;
+  wire [2:0] counter_up_down;
+
+  up_counter #(3,6,1)dut(clk1, reset_n, counter_up_down);
+  
+//  defparam dut.i=10;
+  
+initial  
+clk1=0;
+always #5 clk1=~clk1;
+  
+initial begin
+  @(negedge clk1);
+reset_n=0;
+  @(negedge clk1);
+reset_n=1;
+  #500 $finish();
+end
+  initial begin
+    $monitor($time, "clk1=%b, reset=%b,counter=%b",clk1,reset_n,counter_up_down);
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+endmodule 
