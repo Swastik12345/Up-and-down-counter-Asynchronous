@@ -1,0 +1,52 @@
+// Code your design here
+/*module up_counter#(parameter width=3,parameter i=6,parameter Up_Down=0)(input clk, reset,output counter_up_down);
+  reg [width:0] counter_up_down;
+  
+
+  always @(posedge clk or negedge reset)
+begin
+  if(~reset)
+ counter_up_down <= 4'd0;
+  else if(counter_up>i)
+ counter_up_down <= 4'd0;
+  else
+ counter_up = counter_up+1'b1;
+end
+  
+endmodule*/ 
+
+module up_counter #(
+    parameter WIDTH    = 3,
+    parameter MAX_VAL  = 6,
+    parameter Up_Down  = 0   // 0 = UP counter, 1 = DOWN counter
+)(
+    input                clk,
+    input                reset_n,
+    output reg  [WIDTH-1:0]  counter_up_down
+);
+
+    always @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+            // Reset value
+           // counter_up_down <= (Up_Down == 0) ? {WIDTH{1'b0}} : MAX_VAL[WIDTH-1:0];
+          counter_up_down <= (Up_Down == 0) ? 4'd0 :4'd5;
+       
+        else begin
+            if (Up_Down == 0) begin
+               
+              if (counter_up_down == MAX_VAL-1)
+                    counter_up_down = 4'd0;
+                else
+                    counter_up_down = counter_up_down + 1'b1;
+            end
+            else begin
+                
+                if (counter_up_down == 0)
+                    counter_up_down = MAX_VAL-1;
+                else
+                    counter_up_down <= counter_up_down - 1'b1;
+            end
+        end
+    end
+
+endmodule
